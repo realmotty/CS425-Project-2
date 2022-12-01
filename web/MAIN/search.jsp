@@ -9,7 +9,7 @@
     ServletContext context = request.getServletContext();
 
     if (context.getAttribute("daoFactory") == null) {
-        System.err.println("*** Creating new DAOFactory ...");
+        System.err.println("***Creating new DAOFactory...");
         daoFactory = new DAOFactory();
         context.setAttribute("daoFactory", daoFactory);
     }

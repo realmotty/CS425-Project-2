@@ -25,12 +25,12 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Dynamic Schedule</title>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/main/scripts/p2JS.js"></script>
-        <script type="text/javascript" src="<%= request.getContextPath() %>/main/scripts/jquery-3.6.1.min.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/MAIN/scripts/p2JS.js"></script>
+        <script type="text/javascript" src="<%= request.getContextPath() %>/MAIN/scripts/jquery-3.6.1.min.js"></script>
     </head>
     <body>
         <a href="landing.jsp">Back</a>
-        <form action="<%= request.getContextPath() %>/main/search.jsp" method="GET">
+        <form action="<%= request.getContextPath() %>/MAIN/search.jsp" method="GET">
             <fieldset>
                 <legend>Search by Term:</legend>
                 <p>

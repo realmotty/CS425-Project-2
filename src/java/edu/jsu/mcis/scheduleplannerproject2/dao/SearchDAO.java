@@ -108,6 +108,76 @@ public class SearchDAO {
         return s.toString();
         
     }
+     public String getLevelListAsHTML() {
+        
+        StringBuilder s = new StringBuilder();
+
+        Connection conn = daoFactory.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        try {
+
+            ps = conn.prepareStatement(QUERY_LEVEL_LIST);
+            
+            boolean hasresults = ps.execute();
+
+            if (hasresults) {
+
+                rs = ps.getResultSet();
+                
+                s.append("<select name=\"courseLevel\" id=\"courseLevel\"size=\"3\">");
+                
+                s.append("<option value=\"0\" selected=\"\">All</option>");
+                
+                while (rs.next()) {
+                    
+                    String id = rs.getString("id");
+                    String description = rs.getString("description");
+                    
+                    s.append("<option value=\"").append(id).append("\">");
+                    s.append(description);
+                    s.append("</option>");
+                                        
+                }
+                
+                s.append("</select>");
+
+            }
+
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+
+            if (rs != null) {
+                try {
+                    rs.close();
+                    rs = null;
+                }
+                catch (Exception e) { e.printStackTrace(); }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                    ps = null;
+                }
+                catch (Exception e) { e.printStackTrace(); }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                    conn = null;
+                }
+                catch (Exception e) { e.printStackTrace(); }
+            }
+
+        }
+        
+        return s.toString();
+        
+    }
     
     public String getScheduleTypeListAsHTML() {
         
@@ -179,77 +249,31 @@ public class SearchDAO {
         
     }
     
-    public String getLevelListAsHTML() {
+   
+     public String getTimeFieldsAsHTML(String type) {
+        StringBuilder sb = new StringBuilder();
         
-        StringBuilder s = new StringBuilder();
-
-        Connection conn = daoFactory.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        try {
-
-            ps = conn.prepareStatement(QUERY_LEVEL_LIST);
-            
-            boolean hasresults = ps.execute();
-
-            if (hasresults) {
-
-                rs = ps.getResultSet();
-                
-                s.append("<select name=\"courseLevel\" id=\"courseLevel\"size=\"3\">");
-                
-                s.append("<option value=\"0\" selected=\"\">All</option>");
-                
-                while (rs.next()) {
-                    
-                    String id = rs.getString("id");
-                    String description = rs.getString("description");
-                    
-                    s.append("<option value=\"").append(id).append("\">");
-                    s.append(description);
-                    s.append("</option>");
-                                        
-                }
-                
-                s.append("</select>");
-
-            }
-
+        sb.append("Hour <select id=\"").append(type).append("hour\" name=\"").append(type)
+                .append("hour\" size=\"1\">");
+        for (int i = 0; i <= 12; i++) {
+            sb.append("<option value=\"").append(i).append("\">")
+                    .append(String.format("%02d", i)).append("</option>");
         }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        finally {
-
-            if (rs != null) {
-                try {
-                    rs.close();
-                    rs = null;
-                }
-                catch (Exception e) { e.printStackTrace(); }
-            }
-            if (ps != null) {
-                try {
-                    ps.close();
-                    ps = null;
-                }
-                catch (Exception e) { e.printStackTrace(); }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                    conn = null;
-                }
-                catch (Exception e) { e.printStackTrace(); }
-            }
-
-        }
+        sb.append("</select>");
         
-        return s.toString();
+        sb.append(" Minute <select id=\"").append(type).append("min\" name=\"").append(type)
+                .append("min\" size=\"1\">");
+        for (int i = 0; i <= 55; i+=5) {
+            sb.append("<option value=\"").append(i).append("\">")
+                    .append(String.format("%02d", i)).append("</option>");
+        }
+        sb.append("</select>");
         
-    }
-    
+        sb.append(" AM/PM <select id=\"").append(type).append("ap\" name=\"").append(type)
+                .append("ap\" size=\"1\"><option value=\"a\">am</option><option value=\"p\">pm</option></select>");
+        
+        return sb.toString();
+    }  
     public String getTermListAsHTML() {
         
         StringBuilder s = new StringBuilder();
@@ -319,30 +343,6 @@ public class SearchDAO {
         
     }
     
-    public String getTimeFieldsAsHTML(String type) {
-        StringBuilder sb = new StringBuilder();
-        
-        sb.append("Hour <select id=\"").append(type).append("hour\" name=\"").append(type)
-                .append("hour\" size=\"1\">");
-        for (int i = 0; i <= 12; i++) {
-            sb.append("<option value=\"").append(i).append("\">")
-                    .append(String.format("%02d", i)).append("</option>");
-        }
-        sb.append("</select>");
-        
-        sb.append(" Minute <select id=\"").append(type).append("min\" name=\"").append(type)
-                .append("min\" size=\"1\">");
-        for (int i = 0; i <= 55; i+=5) {
-            sb.append("<option value=\"").append(i).append("\">")
-                    .append(String.format("%02d", i)).append("</option>");
-        }
-        sb.append("</select>");
-        
-        sb.append(" AM/PM <select id=\"").append(type).append("ap\" name=\"").append(type)
-                .append("ap\" size=\"1\"><option value=\"a\">am</option><option value=\"p\">pm</option></select>");
-        
-        return sb.toString();
-    }
     
     public String find(HashMap<String,String> params) {
         JSONObject json = new JSONObject();

@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-//
+
 public class RegistrationDAO {
     private final DAOFactory daoFactory;
     
@@ -85,6 +85,9 @@ public class RegistrationDAO {
                     sections.add(section);
                 }
                 json.put("sections", sections);
+                                System.err.println("jsondate-------");
+                                System.err.println(json.toJSONString());
+
             }
 
         }
@@ -151,7 +154,7 @@ public class RegistrationDAO {
             
         }
         
-        return "This is not a valid CRN!";
+        return "invalid CRN!";
     }
     
     public Integer getStudentId(String username) {
